@@ -64,7 +64,7 @@ const Correlation = () => {
   async function fetchData() {
     const queryParams = {
       parlayBooks: "PRIZEPICKS,UNDERDOG",
-      sports: sports.join(","),
+      sports: sports.length === 0 ? "CSGO,VAL" : sports.join(","),
     };
 
     try {
