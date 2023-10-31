@@ -1,36 +1,16 @@
 import React from "react";
 import axios from "axios";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
-import { styled } from "@mui/material/styles";
+import { MaterialReactTable } from "material-react-table";
+
 import { Box, Button, CircularProgress } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
 import MultipleSelectChip from "./Select";
 import {
   correlationSportValues,
   paths,
   sportsBooksSelectValues,
-  sportsSelectValues,
 } from "../common/constants";
-import {
-  correlationColumns,
-  correlationColumnsInner,
-  middlesColumnsV1,
-  middlesColumnsV2,
-} from "../common/columns";
-import Footer from "./Footer";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+import { correlationColumns } from "../common/columns";
 
 const Correlation = () => {
   const [data, setData] = React.useState([]);
@@ -122,15 +102,18 @@ const Correlation = () => {
         columns={correlationColumns}
         data={rows}
         getSubRows={(row) => row.subRows}
+        expandSubRows={4}
         enableExpandAll={true}
         enableExpanding={true}
         enableColumnActions={false}
         enableColumnFilters={false}
-        enablePagination={false}
+        enablePagination={true}
+        pageSize={10} // Set the number of rows per page
         enableSorting={false}
         enableBottomToolbar={true}
         enableTopToolbar={false}
         muiTableBodyRowProps={{ hover: false }}
+        initialState={{ expanded: true }}
       />
     </div>
   );
