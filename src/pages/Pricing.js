@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -7,13 +7,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/StarBorder";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
-
-const PricingList = styled("ul")({
-  margin: 0,
-  padding: 0,
-  listStyle: "none",
-});
 
 const tiers = [
   {
@@ -49,10 +42,11 @@ const tiers = [
     buttonVariant: "outlined",
   },
 ];
+
 export default function Pricing() {
   return (
     <Container maxWidth="md" component="main" sx={{ paddingTop: 15 }}>
-      <Grid container spacing={5} alignItems="flex-end">
+      <Grid container spacing={5} alignItems="center" justifyContent="center">
         {tiers.map((tier) => (
           <Grid
             item
@@ -78,33 +72,24 @@ export default function Pricing() {
                 }}
               />
               <CardContent>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "baseline",
-                    mb: 2,
-                  }}
+                <Typography
+                  align="center"
+                  variant="h4"
+                  component="div"
+                  sx={{ paddingBottom: 3 }}
                 >
-                  <Typography component="h2" variant="h3" color="text.primary">
-                    ${tier.price}
+                  ${tier.price}/mo
+                </Typography>
+                {tier.description.map((line) => (
+                  <Typography
+                    component="li"
+                    variant="subtitle1"
+                    align="center"
+                    key={line}
+                  >
+                    {line}
                   </Typography>
-                  <Typography variant="h6" color="text.secondary">
-                    /mo
-                  </Typography>
-                </Box>
-                <PricingList>
-                  {tier.description.map((line) => (
-                    <Typography
-                      component="li"
-                      variant="subtitle1"
-                      align="center"
-                      key={line}
-                    >
-                      {line}
-                    </Typography>
-                  ))}
-                </PricingList>
+                ))}
               </CardContent>
               <CardActions>
                 <Button fullWidth variant={tier.buttonVariant}>
