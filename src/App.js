@@ -76,7 +76,9 @@ function App() {
               element={
                 <div>
                   <NavBar />
-                  <Footer />
+                  <div style={footerStyles}>
+                    <Footer />
+                  </div>
                 </div>
               }
             />
