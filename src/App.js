@@ -8,6 +8,10 @@ import "./App.css";
 import Footer from "./pages/Footer";
 import Middles from "./pages/Middles";
 import Correlation from "./pages/Correlation";
+import Profile from "./pages/Profile";
+import SignIn from "./pages/Login";
+import SignUp from "./pages/Register";
+import Pricing from "./pages/Pricing";
 
 const theme = createTheme({
   palette: {
@@ -42,6 +46,15 @@ function App() {
               path="/"
               element={
                 <div>
+                  <SignIn />
+                </div>
+              }
+            />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/home"
+              element={
+                <div>
                   <NavBar />
                   <Footer />
                 </div>
@@ -58,6 +71,15 @@ function App() {
                   <br />
                   <br />
                   <Footer />
+                </div>
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <div>
+                  <NavBar />
+                  <Pricing />
                 </div>
               }
             />
@@ -80,6 +102,16 @@ function App() {
               element={
                 <div>
                   <NavBar />
+                  <Footer />
+                </div>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <div>
+                  <NavBar />
+                  <Profile />
                   <Footer />
                 </div>
               }

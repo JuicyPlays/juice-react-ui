@@ -17,6 +17,15 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,7 +43,7 @@ function NavBar() {
             variant="h5" // Adjust the font size as needed
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -110,15 +119,22 @@ function NavBar() {
 
           {/* The profile, settings, and logout buttons */}
           <div style={{ display: "flex", alignItems: "center" }}>
-            <IconButton style={{ color: "white" }}>
-              <AccountCircleIcon />
-            </IconButton>
-            <IconButton style={{ color: "white" }}>
-              <SettingsIcon />
-            </IconButton>
-            <IconButton style={{ color: "white" }}>
-              <ExitToAppIcon />
-            </IconButton>
+            <AccountCircleIcon onClick={handleMenuClick} />
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose} component={Link} to="/profile">
+                Account
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <SettingsIcon />
+              </MenuItem>
+              <MenuItem onClick={handleClose} component={Link} to="/">
+                <ExitToAppIcon />
+              </MenuItem>
+            </Menu>
           </div>
         </Toolbar>
       </Container>
