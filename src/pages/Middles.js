@@ -16,7 +16,6 @@ import {
   sportsSelectValues,
 } from "../common/constants";
 import { middlesColumnsV1, middlesColumnsV2 } from "../common/columns";
-import Footer from "./Footer";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -32,25 +31,6 @@ const Middles = () => {
   const [sportsBooks, setSportsBooks] = React.useState([]);
   const [sports, setSports] = React.useState([]);
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const [innerWidth, setInnerWidth] = React.useState(window.innerWidth);
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      const newInnerWidth = window.innerWidth;
-      if (newInnerWidth < 1000) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const handleSportsBooksChange = (event) => {
     const {
@@ -88,6 +68,22 @@ const Middles = () => {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  function detectMob() {
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i,
+    ];
+
+    return toMatch.some((toMatchItem) => {
+      return navigator.userAgent.match(toMatchItem);
+    });
   }
 
   const tableV1 = useMaterialReactTable({
@@ -182,7 +178,7 @@ const Middles = () => {
         </Box>
       </div>
 
-      {isMobile ? (
+      {detectMob() ? (
         <MaterialReactTable table={tableV2} />
       ) : (
         <MaterialReactTable table={tableV1} />
