@@ -86,6 +86,11 @@ const Middles = () => {
     });
   }
 
+  useEffect(() => {
+    handleClick();
+    // eslint-disable-next-line
+  }, []);
+
   const tableV1 = useMaterialReactTable({
     columns: middlesColumnsV1,
     data,
