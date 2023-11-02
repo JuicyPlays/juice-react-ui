@@ -19,6 +19,8 @@ function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  console.log(navigator.userAgent);
+
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
