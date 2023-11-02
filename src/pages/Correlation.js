@@ -70,6 +70,7 @@ const Correlation = () => {
       diff: prop.diffs,
       player: prop.player,
       line: prop.line,
+      team: prop.team,
       stat_type: prop.stat_types.split("\n")[i % 2],
       over: prop.over ? "over" : "under", // Fixed the conditional statement
     })),
