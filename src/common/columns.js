@@ -166,25 +166,21 @@ export const correlationListColumns = [
     size: 30,
   },
   {
-    accessorKey: "pp_lines",
+    accessorKey: "pp_line",
     header: "PrizePicks",
-    Cell: CellLine,
   },
   {
     accessorKey: "ud_line",
     header: "Underdog",
-    Cell: CellLine,
   },
   {
     accessorKey: "diff",
     header: "DIFF",
-    Cell,
     size: 30,
   },
   {
     accessorKey: "avg_diff",
     header: "AVG DIFF",
-    Cell,
     size: 30,
   },
 ];
