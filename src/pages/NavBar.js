@@ -55,10 +55,14 @@ const NavBar = () => {
             variant="h5" // Adjust the font size as needed
             noWrap
             component="a"
-            href="/home"
             sx={titleStyles}
           >
-            JuicyPlays
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/home`}
+            >
+              JuicyPlays
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

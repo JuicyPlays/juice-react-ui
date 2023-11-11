@@ -2,18 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "@mui/material";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
 
-  // useEffect(() => {
-  //   if (isAuthenticated()) {
-  //     navigate("/home");
-  //   }
-  //   // eslint-disable-next-line
-  // }, []);
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/home");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {

@@ -25,19 +25,19 @@ const theme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <GoogleOAuthProvider clientId="43154383117-7sgsrq0qpsts84ti9erjmp7pop22tol0.apps.googleusercontent.com">
-    <AuthProvider
-      authType={"cookie"}
-      authName={"_auth"}
-      cookieDomain={window.location.hostname}
-      cookieSecure={window.location.protocol === "https:"}
-    >
+  <AuthProvider
+    authType={"cookie"}
+    authName={"_auth"}
+    cookieDomain={window.location.hostname}
+    cookieSecure={window.location.protocol === "https:"}
+  >
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <App />
         </ThemeProvider>
       </Router>
-    </AuthProvider>
-  </GoogleOAuthProvider>
+    </GoogleOAuthProvider>
+  </AuthProvider>
 );
