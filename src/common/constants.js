@@ -40,7 +40,7 @@ export const sportsSelectValues = [
   "MLB",
 ];
 
-export const correlationSportValues = ["CSGO", "VAL", "NFL"];
+export const correlationSportValues = ["CSGO", "VAL", "NFL", "CFB"];
 
 export const marketsportsBooksSelectValues = [];
 

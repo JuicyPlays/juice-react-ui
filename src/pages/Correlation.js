@@ -60,7 +60,7 @@ const Correlation = () => {
     console.log("sports", sports);
     const queryParams = {
       parlayBooks: "PRIZEPICKS,UNDERDOG",
-      sports: sports.length === 0 ? "CSGO,VAL,NFL" : sports.join(","),
+      sports: sports.length === 0 ? "CSGO,VAL,NFL,CFB" : sports.join(","),
       minCorrelationScore: 1.0, // TODO: Pass in as input on UI
     };
 
