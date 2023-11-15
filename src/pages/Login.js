@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "@mui/material";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
 import { useEffect } from "react";
@@ -27,23 +26,22 @@ const Login = () => {
         expiresIn: 60,
         tokenType: "Bearer",
       })) {
-        console.log("Additional  Info", getAdditionalUserInfo(result));
-        console.log(isAuthenticated());
+        // console.log("Additional  Info", getAdditionalUserInfo(result));
+        // console.log(isAuthenticated());
         navigate("/home");
       }
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-
       // You can handle the signed-in user information or perform additional actions here.
       console.log('Successfully signed in with Google:', user);
     } catch (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
+      // // Handle Errors here.
+      // const errorCode = error.code;
       const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData?.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
+      // // The email of the user's account used.
+      // const email = error.customData?.email;
+      // // The AuthCredential type that was used.
+      // const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
 
       // You can also display an error message to the user or perform other error handling.
