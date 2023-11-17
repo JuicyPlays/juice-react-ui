@@ -8,8 +8,8 @@ import RenderPricing from "./pages/Pricing";
 import RenderCorrelation from "./pages/Correlation";
 import Logout from "./pages/Logout";
 import { RequireAuth } from "react-auth-kit";
-import { initializeApp } from 'firebase/app';
-import { getAuth} from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB4MQBCofpzSbKVQhnMZ6ANqrMHtowuY6I",
@@ -19,7 +19,7 @@ const firebaseConfig = {
   storageBucket: "juicy-plays-db.appspot.com",
   messagingSenderId: "43154383117",
   appId: "1:43154383117:web:0bd1bca0f106b880d0d044",
-  measurementId: "G-1S3F7R1SS4"
+  measurementId: "G-1S3F7R1SS4",
 };
 
 const app = initializeApp(firebaseConfig);

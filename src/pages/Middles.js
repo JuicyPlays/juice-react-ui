@@ -9,7 +9,6 @@ import { Box, Button, CircularProgress } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import MultipleSelectChip from "./Select";
 import {
   paths,
   sportsBooksSelectValues,
@@ -18,6 +17,7 @@ import {
 import { middlesColumnsV1, middlesColumnsV2 } from "../common/columns";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import MySelect from "./ReactSelect";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -27,6 +27,16 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const sportsOptions = sportsSelectValues.map((value) => ({
+  value,
+  label: value,
+}));
+
+const sportsBooksOptions = sportsBooksSelectValues.map((value) => ({
+  value,
+  label: value,
+}));
+
 const Middles = () => {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -34,18 +44,12 @@ const Middles = () => {
   const [sports, setSports] = React.useState([]);
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
-  const handleSportsBooksChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSportsBooks(typeof value === "string" ? value.split(",") : value);
+  const handleSportsBooksChange = (selected) => {
+    setSportsBooks(selected.map((it) => it.value).join(","));
   };
 
-  const handleSportsChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSports(typeof value === "string" ? value.split(",") : value);
+  const handleSportsChange = (selected) => {
+    setSports(selected.map((it) => it.value).join(","));
   };
 
   async function handleClick() {
@@ -58,8 +62,8 @@ const Middles = () => {
 
   async function fetchData() {
     const queryParams = {
-      parlayBooks: sportsBooks.join(","),
-      sports: sports.join(","),
+      parlayBooks: sportsBooks,
+      sports: sports,
     };
 
     try {
@@ -158,25 +162,25 @@ const Middles = () => {
   return (
     <div>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <Box mr={2}>
-          <MultipleSelectChip
-            options={sportsBooksSelectValues}
-            label="Books"
+        <Box mr={2} margin="8px">
+          <MySelect
+            options={sportsBooksOptions}
             handleChanges={handleSportsBooksChange}
+            label={"Books"}
           />
         </Box>
-        <Box mr={2}>
-          <MultipleSelectChip
-            options={sportsSelectValues}
-            label="Sports"
+        <Box mr={2} margin="8px">
+          <MySelect
+            options={sportsOptions}
             handleChanges={handleSportsChange}
+            label={"Sports"}
           />
         </Box>
         <Box mr={2} margin="8px">
           <Button
             variant="outlined"
             startIcon={<RefreshIcon />}
-            style={{ height: "55px" }}
+            style={{ height: "39px" }}
             onClick={handleClick}
             disabled={buttonDisabled}
           >
