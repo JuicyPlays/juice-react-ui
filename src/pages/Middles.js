@@ -13,6 +13,7 @@ import {
   paths,
   sportsBooksSelectValues,
   sportsSelectValues,
+  statSelectValues,
 } from "../common/constants";
 import { middlesColumnsV1, middlesColumnsV2 } from "../common/columns";
 import NavBar from "./NavBar";
@@ -37,11 +38,17 @@ const sportsBooksOptions = sportsBooksSelectValues.map((value) => ({
   label: value,
 }));
 
+const statOptions = statSelectValues.map((value) => ({
+  value,
+  label: value,
+}));
+
 const Middles = () => {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [sportsBooks, setSportsBooks] = React.useState([]);
   const [sports, setSports] = React.useState([]);
+  const [stats, setStats] = React.useState([]);
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
   const handleSportsBooksChange = (selected) => {
@@ -50,6 +57,10 @@ const Middles = () => {
 
   const handleSportsChange = (selected) => {
     setSports(selected.map((it) => it.value).join(","));
+  };
+
+  const handleStatChange = (selected) => {
+    setStats(selected.map((it) => it.value).join(","));
   };
 
   async function handleClick() {
@@ -64,6 +75,7 @@ const Middles = () => {
     const queryParams = {
       parlayBooks: sportsBooks,
       sports: sports,
+      stats: stats,
     };
 
     try {
@@ -174,6 +186,13 @@ const Middles = () => {
             options={sportsOptions}
             handleChanges={handleSportsChange}
             label={"Sports"}
+          />
+        </Box>
+        <Box mr={2} margin="8px">
+          <MySelect
+            options={statOptions}
+            handleChanges={handleStatChange}
+            label={"Stat"}
           />
         </Box>
         <Box mr={2} margin="8px">

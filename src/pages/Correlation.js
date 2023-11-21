@@ -11,6 +11,7 @@ import {
   correlationSportValues,
   paths,
   sportsBooksSelectValues,
+  correlationStatSelectValues,
 } from "../common/constants";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
@@ -31,12 +32,18 @@ const sportsBooksOptions = sportsBooksSelectValues.map((value) => ({
   label: value,
 }));
 
+const statsOptions = correlationStatSelectValues.map((value) => ({
+  value,
+  label: value,
+}));
+
 const Correlation = () => {
   const [correlationSlipsData, setCorrelationSlipsData] = React.useState([]);
   const [correlationListData, setCorrelationListData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [, setSportsBooks] = React.useState([]);
   const [sports, setSports] = React.useState([]);
+  const [stats, setStats] = React.useState([]);
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -50,6 +57,10 @@ const Correlation = () => {
 
   const handleSportsChange = (selected) => {
     setSports(selected.map((it) => it.value));
+  };
+
+  const handleStatChange = (selected) => {
+    setStats(selected.map((it) => it.value).join(","));
   };
 
   async function handleClick() {
@@ -66,6 +77,7 @@ const Correlation = () => {
       parlayBooks: "PRIZEPICKS,UNDERDOG",
       sports: sports.length === 0 ? "CSGO,VAL,NFL,CFB" : sports.join(","),
       minCorrelationScore: 1.0, // TODO: Pass in as input on UI
+      stats: stats,
     };
 
     try {
@@ -137,6 +149,13 @@ const Correlation = () => {
             options={sportsOptions}
             handleChanges={handleSportsChange}
             label={"Sports"}
+          />
+        </Box>
+        <Box mr={2} margin="8px">
+          <MySelect
+            options={statsOptions}
+            handleChanges={handleStatChange}
+            label={"Stat"}
           />
         </Box>
         <Box mr={2} margin="8px">
