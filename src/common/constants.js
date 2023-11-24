@@ -82,6 +82,7 @@ export const marketsportsBooksSelectValues = [];
 export const correlationStatSelectValues = [
   "MAPS 1-2 Kills",
   "MAPS 1-2 Headshots",
+  "MAP 1 Kills"
 ];
 
 export const pages = [
