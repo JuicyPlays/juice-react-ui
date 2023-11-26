@@ -13,7 +13,6 @@ import {
   paths,
   sportsBooksSelectValues,
   sportsSelectValues,
-  statSelectValues,
 } from "../common/constants";
 import { middlesColumnsV1, middlesColumnsV2 } from "../common/columns";
 import NavBar from "./NavBar";
@@ -38,13 +37,9 @@ const sportsBooksOptions = sportsBooksSelectValues.map((value) => ({
   label: value,
 }));
 
-const statOptions = statSelectValues.map((value) => ({
-  value,
-  label: value,
-}));
-
 const Middles = () => {
   const [data, setData] = React.useState([]);
+  const [statOptions, setStatOptions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [sportsBooks, setSportsBooks] = React.useState([]);
   const [sports, setSports] = React.useState([]);
@@ -83,6 +78,12 @@ const Middles = () => {
         params: queryParams,
       });
       setData(response.data.props);
+      setStatOptions(
+        response.data.statTypes.map((value) => ({
+          value,
+          label: value,
+        }))
+      );
     } catch (error) {
       console.error(error);
     }

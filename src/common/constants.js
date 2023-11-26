@@ -40,8 +40,6 @@ export const sportsSelectValues = [
   "MLB",
 ];
 
-export const statSelectValues = ["MAPS 1-2 Kills", "MAPS 1-2 Headshots"];
-
 export const colourOptions = [
   { value: "ocean", label: "Ocean", color: "#00B8D9", isFixed: true },
   { value: "blue", label: "Blue", color: "#0052CC", disabled: true },
@@ -82,7 +80,7 @@ export const marketsportsBooksSelectValues = [];
 export const correlationStatSelectValues = [
   "MAPS 1-2 Kills",
   "MAPS 1-2 Headshots",
-  "MAP 1 Kills"
+  "MAP 1 Kills",
 ];
 
 export const pages = [
