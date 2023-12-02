@@ -7,6 +7,7 @@ export const paths = {
     "https://juicyplays-api-d887c104909f.herokuapp.com/v1/correlation",
   getCorrelationListBasePath:
     "https://juicyplays-api-d887c104909f.herokuapp.com/v1/correlation/list",
+  createNewUserPath: "https://juicyplays-api-d887c104909f.herokuapp.com/v1/user/",
 };
 
 export const colourOptions = [

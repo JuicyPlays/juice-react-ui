@@ -1,8 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Button } from "@mui/material";
-import { useSignIn } from "react-auth-kit";
+import { useAuthUser, useSignIn } from "react-auth-kit";
 import { useEffect } from "react";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  getAdditionalUserInfo,
+} from "firebase/auth";
+import { paths } from "../common/constants";
 // import { getAdditionalUserInfo } from "firebase/auth";
 
 const Login = () => {
@@ -21,6 +28,17 @@ const Login = () => {
       // The signed-in user info.
       const user = result.user;
 
+      if (getAdditionalUserInfo(result).isNewUser) {
+        const requestBody = {
+          userId: user.uid,
+          email: user.email,
+          name: user.displayName,
+        };
+
+        await axios.post(paths.createNewUserPath + user.uid, requestBody);
+        console.log("created new user ->", user.displayName);
+      }
+
       if (
         signIn({
           token: token,
@@ -29,9 +47,6 @@ const Login = () => {
         })
       ) {
         localStorage.setItem("uid", user.uid);
-        localStorage.setItem("token", token);
-        localStorage.setItem("expiresIn", 60);
-        localStorage.setItem("tokenType", "Bearer");
         navigate("/home");
       }
       // IdP data available using getAdditionalUserInfo(result)
@@ -53,18 +68,10 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const expiresIn = localStorage.getItem("expiresIn");
-    const tokenType = localStorage.getItem("tokenType");
-
-    if (token && expiresIn && tokenType) {
-      // Perform authentication with the stored token
-      signIn({ token, expiresIn, tokenType });
-      navigate("/home");
-    }
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //     navigate("/home");
+  //   // eslint-disable-next-line
+  // }, []);
 
   return (
     <div style={styles.container}>
