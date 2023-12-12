@@ -9,6 +9,11 @@ import StarIcon from "@mui/icons-material/StarBorder";
 import Typography from "@mui/material/Typography";
 import { Component } from "react";
 import NavBar from "./NavBar";
+import {
+  useAuthUser,
+  useIsAuthenticated,
+  withIsAuthenticated,
+} from "react-auth-kit";
 
 const tiers = [
   {
@@ -40,6 +45,7 @@ const tiers = [
 ];
 
 const Pricing = () => {
+  const auth = useAuthUser();
   const openLink = (url) => {
     window.open(url, "_blank");
   };
@@ -97,7 +103,9 @@ const Pricing = () => {
                     openLink(
                       tier.link +
                         "?client_reference_id=" +
-                        localStorage.getItem("uid")
+                        auth().uid +
+                        "&prefilled_email=" +
+                        auth().email
                     )
                   }
                   fullWidth

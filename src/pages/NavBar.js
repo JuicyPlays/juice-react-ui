@@ -118,7 +118,9 @@ const NavBar = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Account</MenuItem>
+              <MenuItem onClick={handleClose} component={Link} to="/account">
+                Account
+              </MenuItem>
               <Divider />
               <MenuItem onClick={handleClose}>
                 <ListItemIcon>

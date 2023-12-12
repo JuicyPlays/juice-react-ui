@@ -14,6 +14,11 @@ import { middlesColumnsV1, middlesColumnsV2 } from "../common/columns";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import MySelect from "./ReactSelect";
+import {
+  useAuthUser,
+  useIsAuthenticated,
+  withIsAuthenticated,
+} from "react-auth-kit";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,6 +29,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Middles = () => {
+  const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
   const [data, setData] = React.useState([]);
   const [sportsBooksOptions, setSportsBooksOptions] = React.useState([]);
   const [statOptions, setStatOptions] = React.useState([]);
@@ -55,16 +62,26 @@ const Middles = () => {
   }
 
   async function fetchData() {
+    if (isAuthenticated() === undefined || isAuthenticated() === false) {
+      return;
+    }
+
     const queryParams = {
       parlayBooks: sportsBooks,
       sports: sports,
       stats: stats,
     };
 
+    const headers = {
+      "x-customer-id": auth().uid,
+    };
+
     try {
       const getMiddlesResponse = await axios.get(paths.getMiddlesBasePath, {
         params: queryParams,
+        headers: headers,
       });
+
       setData(getMiddlesResponse.data.props);
       setStatOptions(
         getMiddlesResponse.data.statTypes.map((value) => ({
@@ -230,4 +247,4 @@ class RenderMiddles extends Component {
   }
 }
 
-export default RenderMiddles;
+export default withIsAuthenticated(RenderMiddles);

@@ -10,6 +10,7 @@ import Logout from "./pages/Logout";
 import { RequireAuth } from "react-auth-kit";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import RenderAccount from "./pages/Account";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB4MQBCofpzSbKVQhnMZ6ANqrMHtowuY6I",
@@ -58,6 +59,14 @@ function App() {
         element={
           <RequireAuth loginPath="/">
             <RenderPricing />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <RequireAuth loginPath="/">
+            <RenderAccount />
           </RequireAuth>
         }
       />

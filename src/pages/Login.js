@@ -41,18 +41,19 @@ const Login = () => {
 
       if (
         signIn({
-          token: token,
+          token: user.accessToken,
           expiresIn: 60,
           tokenType: "Bearer",
+          authState: {
+            uid: user.uid,
+            email: user.email,
+          },
         })
       ) {
-        localStorage.setItem("uid", user.uid);
         navigate("/home");
       }
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-      // You can handle the signed-in user information or perform additional actions here.
-      console.log("Successfully signed in with Google:", user);
+
+      console.log("User signed in", user.displayName);
     } catch (error) {
       // // Handle Errors here.
       // const errorCode = error.code;
