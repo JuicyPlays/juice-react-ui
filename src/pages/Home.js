@@ -79,7 +79,7 @@ const Home = () => {
               color="text.secondary"
               paragraph
             >
-              ✔️ Middling ✔️ Correlation
+              ✔️ Fantasy Screen ✔️ Correlation Tool
             </Typography>
           </Typography>
           <Typography
