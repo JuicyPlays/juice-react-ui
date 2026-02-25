@@ -605,3 +605,7 @@ code {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+.table-scroll-container>div {
+  min-width: 700px;
+}

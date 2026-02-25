@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CopyToClipboardButton from "../pages/CopyToClipboard";
+
+function useMediaQuery(query) {
+    const [matches, setMatches] = useState(false);
+    useEffect(() => {
+        const media = window.matchMedia(query);
+        if (media.matches !== matches) {
+            setMatches(media.matches);
+        }
+        const listener = () => setMatches(media.matches);
+        media.addEventListener("change", listener);
+        return () => media.removeEventListener("change", listener);
+    }, [matches, query]);
+    return matches;
+}
 
 const SlipComponent = ({ slips }) => {
     const [currentPage, setCurrentPage] = useState(0);
+    const isMobile = useMediaQuery("(max-width: 900px)");
     const slipsPerPage = 5;
 
     if (!slips || slips.length === 0) {
@@ -76,53 +91,86 @@ const SlipComponent = ({ slips }) => {
                                 </div>
                             </div>
 
-                            <div className="table-scroll-container">
-                                <div style={styles.tableHeader}>
-                                    <div style={{ ...styles.th, flex: 1.5 }}>Player</div>
-                                    <div style={{ ...styles.th, flex: 1 }}>Prop</div>
-                                    <div style={{ ...styles.th, width: '90px', textAlign: 'center' }}>Sportsbook</div>
-                                    <div style={{ ...styles.th, width: '70px', textAlign: 'center' }}>Model</div>
-                                    <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>Lean</div>
-                                    <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>Prob</div>
-                                    <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>EV</div>
-                                </div>
-
-                                {/* Card Body - Table Rows */}
-                                <div style={styles.picksContainer}>
+                            {isMobile ? (
+                                <div style={styles.mobilePicksContainer}>
                                     {slip.picks.map((pick, j) => (
-                                        <div key={j} style={{ ...styles.tableRow, borderBottom: j < slip.picks.length - 1 ? "1px solid #1f1f2e" : "none" }}>
-                                            <div style={{ ...styles.td, flex: 1.5, flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
-                                                <div style={styles.playerWrap}>
-                                                    <span style={styles.playerName}>{pick.player}</span>
-                                                    <CopyToClipboardButton player={pick.player} hideText={true} />
-                                                    <span style={styles.sportBadge}>{pick.sport}</span>
+                                        <div key={j} style={styles.mobileCardRow}>
+                                            <div style={styles.mobileCardHeader}>
+                                                <span style={styles.playerName}>{pick.player}</span>
+                                                <CopyToClipboardButton player={pick.player} hideText={true} />
+                                                <span style={{ ...styles.sportBadge, marginLeft: "auto" }}>{pick.sport}</span>
+                                            </div>
+                                            <div style={styles.mobileDetailGrid}>
+                                                <span style={styles.mobileChip}>{pick.teams}</span>
+                                                <span style={styles.mobileChip}>{pick.statType}</span>
+                                            </div>
+                                            <div style={{ ...styles.mobileDetailGrid, marginTop: "4px" }}>
+                                                <span style={styles.mobileLineChip}>Book: {pick.sportsbookLine}</span>
+                                                <span style={styles.mobileLineChip}>Model: {pick.modelLine}</span>
+                                                <span style={pick.over ? styles.mobileLeanOver : styles.mobileLeanUnder}>{pick.over ? "OVER" : "UNDER"}</span>
+                                            </div>
+                                            <div style={{ ...styles.mobileDetailGrid, marginTop: "8px", justifyContent: "space-between", borderTop: "1px solid #2d2d3d", paddingTop: "8px" }}>
+                                                <div style={styles.mobileStatBox}>
+                                                    <div style={styles.mobileStatLabel}>Prob</div>
+                                                    <span style={styles.diffText}>{pick.prob ? `${pick.prob.toFixed(1)}%` : "-"}</span>
                                                 </div>
-                                                <div style={styles.matchupText}>{pick.teams}</div>
-                                            </div>
-                                            <div style={{ ...styles.td, flex: 1 }}>
-                                                <span style={styles.propText}>{pick.statType}</span>
-                                            </div>
-                                            <div style={{ ...styles.td, width: '90px', justifyContent: 'center' }}>
-                                                <div style={styles.targetLinePill}>{pick.sportsbookLine}</div>
-                                            </div>
-                                            <div style={{ ...styles.td, width: '70px', justifyContent: 'center' }}>
-                                                <div style={styles.modelLinePill}>{pick.modelLine}</div>
-                                            </div>
-                                            <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
-                                                <span style={pick.over ? styles.leanOver : styles.leanUnder}>
-                                                    {pick.over ? "OVER" : "UNDER"}
-                                                </span>
-                                            </div>
-                                            <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
-                                                <span style={styles.diffText}>{pick.prob ? `${pick.prob.toFixed(1)}%` : "-"}</span>
-                                            </div>
-                                            <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
-                                                <span style={styles.diffText}>{pick.evPercent ? `${pick.evPercent.toFixed(1)}%` : "-"}</span>
+                                                <div style={styles.mobileStatBox}>
+                                                    <div style={styles.mobileStatLabel}>EV</div>
+                                                    <span style={styles.diffText}>{pick.evPercent ? `${pick.evPercent.toFixed(1)}%` : "-"}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="table-scroll-container">
+                                    <div style={styles.tableHeader}>
+                                        <div style={{ ...styles.th, flex: 1.5 }}>Player</div>
+                                        <div style={{ ...styles.th, flex: 1 }}>Prop</div>
+                                        <div style={{ ...styles.th, width: '90px', textAlign: 'center' }}>Sportsbook</div>
+                                        <div style={{ ...styles.th, width: '70px', textAlign: 'center' }}>Model</div>
+                                        <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>Lean</div>
+                                        <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>Prob</div>
+                                        <div style={{ ...styles.th, width: '80px', textAlign: 'center' }}>EV</div>
+                                    </div>
+
+                                    {/* Card Body - Table Rows */}
+                                    <div style={styles.picksContainer}>
+                                        {slip.picks.map((pick, j) => (
+                                            <div key={j} style={{ ...styles.tableRow, borderBottom: j < slip.picks.length - 1 ? "1px solid #1f1f2e" : "none" }}>
+                                                <div style={{ ...styles.td, flex: 1.5, flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
+                                                    <div style={styles.playerWrap}>
+                                                        <span style={styles.playerName}>{pick.player}</span>
+                                                        <CopyToClipboardButton player={pick.player} hideText={true} />
+                                                        <span style={styles.sportBadge}>{pick.sport}</span>
+                                                    </div>
+                                                    <div style={styles.matchupText}>{pick.teams}</div>
+                                                </div>
+                                                <div style={{ ...styles.td, flex: 1 }}>
+                                                    <span style={styles.propText}>{pick.statType}</span>
+                                                </div>
+                                                <div style={{ ...styles.td, width: '90px', justifyContent: 'center' }}>
+                                                    <div style={styles.targetLinePill}>{pick.sportsbookLine}</div>
+                                                </div>
+                                                <div style={{ ...styles.td, width: '70px', justifyContent: 'center' }}>
+                                                    <div style={styles.modelLinePill}>{pick.modelLine}</div>
+                                                </div>
+                                                <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
+                                                    <span style={pick.over ? styles.leanOver : styles.leanUnder}>
+                                                        {pick.over ? "OVER" : "UNDER"}
+                                                    </span>
+                                                </div>
+                                                <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
+                                                    <span style={styles.diffText}>{pick.prob ? `${pick.prob.toFixed(1)}%` : "-"}</span>
+                                                </div>
+                                                <div style={{ ...styles.td, width: '80px', justifyContent: 'center' }}>
+                                                    <span style={styles.diffText}>{pick.evPercent ? `${pick.evPercent.toFixed(1)}%` : "-"}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -283,7 +331,6 @@ const styles = {
         padding: "12px 24px",
         borderBottom: "1px solid #1f1f2e",
         backgroundColor: "#0d0d14",
-        minWidth: "700px",
     },
     th: {
         fontSize: "13px",
@@ -300,7 +347,6 @@ const styles = {
         padding: "16px 24px",
         transition: "background 0.2s ease",
         backgroundColor: "#13131a",
-        minWidth: "700px",
     },
     td: {
         display: "flex",
@@ -420,5 +466,75 @@ const styles = {
         fontSize: "14px",
         color: "#8b8b9e",
         margin: 0,
+    },
+    mobilePicksContainer: {
+        display: "flex",
+        flexDirection: "column",
+    },
+    mobileCardRow: {
+        padding: "16px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        borderBottom: "1px solid #1f1f2e",
+    },
+    mobileCardHeader: {
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+    },
+    mobileDetailGrid: {
+        display: "flex",
+        gap: "8px",
+        flexWrap: "wrap",
+        alignItems: "center"
+    },
+    mobileChip: {
+        padding: "4px 10px",
+        backgroundColor: "rgba(255,255,255,0.05)",
+        borderRadius: "6px",
+        fontSize: "12px",
+        color: "#e2e2e8",
+        fontWeight: "500",
+        border: "1px solid #2d2d3d",
+    },
+    mobileLineChip: {
+        padding: "4px 10px",
+        backgroundColor: "rgba(99,102,241,0.12)",
+        borderRadius: "6px",
+        fontSize: "12px",
+        color: "#818cf8",
+        fontWeight: "600",
+        border: "1px solid rgba(99,102,241,0.2)",
+    },
+    mobileLeanOver: {
+        padding: "4px 10px",
+        backgroundColor: "rgba(16, 185, 129, 0.12)",
+        borderRadius: "6px",
+        fontSize: "12px",
+        color: "#10b981",
+        fontWeight: "800",
+        border: "1px solid rgba(16, 185, 129, 0.2)",
+    },
+    mobileLeanUnder: {
+        padding: "4px 10px",
+        backgroundColor: "rgba(239, 68, 68, 0.12)",
+        borderRadius: "6px",
+        fontSize: "12px",
+        color: "#ef4444",
+        fontWeight: "800",
+        border: "1px solid rgba(239, 68, 68, 0.2)",
+    },
+    mobileStatBox: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "2px",
+    },
+    mobileStatLabel: {
+        fontSize: "10px",
+        fontWeight: "700",
+        color: "#8b8b9e",
+        textTransform: "uppercase",
+        letterSpacing: "0.05em",
     },
 };
