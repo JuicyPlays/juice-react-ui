@@ -2,14 +2,16 @@ import * as React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { pages } from "../common/constants";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Logout, Settings } from "@mui/icons-material";
+import { Logout, Settings, Login } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useIsAuthenticated } from "react-auth-kit";
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const authenticated = useIsAuthenticated();
 
   const handleProfileClick = () => setAnchorEl((v) => !v);
   const closeProfile = () => setAnchorEl(false);
@@ -23,7 +25,7 @@ const NavBar = () => {
       <nav style={styles.nav}>
         <div style={styles.inner}>
           {/* Logo */}
-          <Link to="/home" style={styles.logoLink} onClick={closeMobile}>
+          <Link to="/" style={styles.logoLink} onClick={closeMobile}>
             <span style={styles.logoIcon}>⚡</span>
             <span style={styles.logoText}>
               <span style={styles.logoJuicy}>Juicy</span>
@@ -50,15 +52,31 @@ const NavBar = () => {
 
           {/* Right side: profile + mobile hamburger */}
           <div className="nav-right-side" style={styles.rightSide}>
-            {/* Profile button */}
+            {/* Profile button / Login button */}
             <div style={{ position: "relative" }}>
-              <button
-                style={styles.profileBtn}
-                onClick={handleProfileClick}
-                aria-label="User menu"
-              >
-                <AccountCircleIcon style={{ fontSize: 20, color: "var(--text-secondary)" }} />
-              </button>
+              {authenticated() ? (
+                <button
+                  style={styles.profileBtn}
+                  onClick={handleProfileClick}
+                  aria-label="User menu"
+                >
+                  <AccountCircleIcon style={{ fontSize: 20, color: "var(--text-secondary)" }} />
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  state={{ from: location }}
+                  style={{
+                    ...styles.navLink,
+                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                    color: "white",
+                    padding: "6px 16px",
+                    fontWeight: 600,
+                  }}
+                >
+                  Login
+                </Link>
+              )}
 
               {anchorEl && (
                 <>
@@ -106,9 +124,15 @@ const NavBar = () => {
               </Link>
             ))}
             <div style={styles.dropdownDivider} />
-            <Link to="/account" style={styles.mobileLink} onClick={closeMobile}>Account</Link>
-            <Link to="/account" style={styles.mobileLink} onClick={closeMobile}>Settings</Link>
-            <Link to="/logout" style={{ ...styles.mobileLink, color: "#ef4444" }} onClick={closeMobile}>Sign out</Link>
+            {authenticated() ? (
+              <>
+                <Link to="/account" style={styles.mobileLink} onClick={closeMobile}>Account</Link>
+                <Link to="/account" style={styles.mobileLink} onClick={closeMobile}>Settings</Link>
+                <Link to="/logout" style={{ ...styles.mobileLink, color: "#ef4444" }} onClick={closeMobile}>Sign out</Link>
+              </>
+            ) : (
+              <Link to="/login" style={{ ...styles.mobileLink, background: "rgba(99, 102, 241, 0.1)", color: "var(--accent-light)" }} onClick={closeMobile}>Login</Link>
+            )}
           </div>
         )}
       </nav>

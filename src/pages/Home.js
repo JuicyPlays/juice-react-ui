@@ -1,6 +1,6 @@
 /* eslint-disable react/style-prop-object */
 import React, { Component, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import axios from "axios";
@@ -62,6 +62,7 @@ const plans = [
 const PricingCard = ({ plan }) => {
   const stripe = useStripe();
   const user = useAuthUser();
+  const navigate = useNavigate();
   const [subscribed, setSubscribed] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -80,7 +81,13 @@ const PricingCard = ({ plan }) => {
     if (user()) getUser(user().userId);
   }, [user]);
 
+  const location = useLocation();
+
   const handleClick = async () => {
+    if (!user()) {
+      navigate("/login", { state: { from: location } });
+      return;
+    }
     if (!subscribed) {
       const response = await axios.post(
         import.meta.env.VITE_JUICE_API_BASE_URL + "/checkout-session",
@@ -88,8 +95,8 @@ const PricingCard = ({ plan }) => {
           priceId: plan.priceId,
           userId: user().userId,
           email: user().email,
-          successUrl: import.meta.env.VITE_BASE_URL + "/home",
-          cancelUrl: import.meta.env.VITE_BASE_URL + "/home",
+          successUrl: import.meta.env.VITE_BASE_URL + "/",
+          cancelUrl: import.meta.env.VITE_BASE_URL + "/",
         }
       );
       const sessionUrl = response.data;

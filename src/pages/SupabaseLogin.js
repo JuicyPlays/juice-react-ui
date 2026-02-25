@@ -13,77 +13,12 @@ export default function SupabaseLogin() {
   const signOut = useSignOut();
   const [session, setSession] = useState(null);
 
-  async function handleSignIn(userId, session) {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_JUICE_API_USERS}/userId/${userId}`
-      );
-      if (response?.data?.userId === userId) {
-        navigate("/home");
-        setSession(session);
-        return;
-      }
-    } catch (error) {
-      console.error("Error fetching user. Will try to create.", userId, error);
-    }
-
-    try {
-      const response = await axios.post(import.meta.env.VITE_JUICE_API_USERS, {
-        userId: userId,
-      });
-      if (response?.data?.userId === userId) {
-        navigate("/home");
-        setSession();
-        return;
-      }
-    } catch (error) {
-      console.log("Error creating new user.", userId, error);
-      await supabase.auth.signOut();
-      signOut();
+  useEffect(() => {
+    if (authenticated()) {
       navigate("/");
     }
-  }
+  }, [authenticated, navigate]);
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session != null && authenticated()) {
-        navigate("/home");
-      }
-      if (session == null && authenticated()) {
-        signOut();
-      }
-      if (session === null) {
-        return;
-      }
-      const user = await supabase.auth.getUser();
-      const userId = user.data.user.id;
-      if (userId === null || userId === undefined) {
-        setSession(null);
-        await supabase.auth.signOut();
-        signOut();
-        navigate("/");
-      }
-      if (
-        !authenticated() &&
-        signIn({
-          token: session.access_token,
-          expiresIn: session.expires_in,
-          tokenType: session.token_type,
-          authState: {
-            userId: userId,
-            email: user.data.user.email,
-            name: user.data.user.user_metadata.name,
-          },
-        })
-      ) {
-        await handleSignIn(userId, session);
-      }
-    });
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line
-  }, [navigate, signIn, signOut, authenticated, session]);
 
   if (!session) {
     return (

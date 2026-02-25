@@ -1,16 +1,18 @@
 import "./index.css";
 import { createClient } from "@supabase/supabase-js";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import SupabaseLogin from "./pages/SupabaseLogin";
 import RenderHome from "./pages/Home";
 import RenderJuicyPlays from "./pages/JuicyPlays";
 import RenderSlips from "./pages/Slips";
 import Logout from "./pages/Logout";
-import { AuthProvider, RequireAuth } from "react-auth-kit";
+import { AuthProvider, RequireAuth, useIsAuthenticated, useSignIn, useSignOut } from "react-auth-kit";
 import { loadStripe } from "@stripe/stripe-js";
 import RenderAccount from "./pages/Account";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import { useEffect } from "react";
+import axios from "axios";
 
 // The supabase client
 export const supabase = createClient(
@@ -20,6 +22,117 @@ export const supabase = createClient(
 
 export const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK, {});
 
+function MainContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const authenticated = useIsAuthenticated();
+  const signIn = useSignIn();
+  const signOut = useSignOut();
+
+  useEffect(() => {
+    async function handleSignIn(userId, session) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_JUICE_API_USERS}/userId/${userId}`
+        );
+        if (response?.data?.userId === userId) {
+          const redirectPath = location.state?.from?.pathname || "/";
+          navigate(redirectPath, { replace: true });
+          return;
+        }
+      } catch (error) {
+        console.error("Error fetching user. Will try to create.", userId, error);
+      }
+
+      try {
+        const response = await axios.post(import.meta.env.VITE_JUICE_API_USERS, {
+          userId: userId,
+        });
+        if (response?.data?.userId === userId) {
+          const redirectPath = location.state?.from?.pathname || "/";
+          navigate(redirectPath, { replace: true });
+          return;
+        }
+      } catch (error) {
+        console.log("Error creating new user.", userId, error);
+        await supabase.auth.signOut();
+        signOut();
+        navigate("/login");
+      }
+    }
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session == null && authenticated()) {
+        signOut();
+      }
+
+      if (session != null && !authenticated()) {
+        const user = session.user;
+        const userId = user.id;
+
+        if (signIn({
+          token: session.access_token,
+          expiresIn: session.expires_in,
+          tokenType: session.token_type,
+          authState: {
+            userId: userId,
+            email: user.email,
+            name: user.user_metadata.name,
+          },
+        })) {
+          await handleSignIn(userId, session);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, signIn, signOut, authenticated, location.state]);
+
+  return (
+    <Routes>
+      <Route path="/" Component={RenderHome} />
+      <Route path="/login" Component={SupabaseLogin} />
+      <Route path="/logout" Component={Logout} />
+      <Route path="/privacy" Component={Privacy} />
+      <Route path="/terms" Component={Terms} />
+      <Route
+        path="/home"
+        element={
+          <RequireAuth loginPath="/login">
+            <RenderHome />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/juicy"
+        element={
+          <RequireAuth loginPath="/login">
+            <RenderJuicyPlays />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/slips"
+        element={
+          <RequireAuth loginPath="/login">
+            <RenderSlips />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+          <RequireAuth loginPath="/login">
+            <RenderAccount />
+          </RequireAuth>
+        }
+      />
+    </Routes>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider
@@ -28,44 +141,8 @@ export default function App() {
       cookieDomain={window.location.hostname}
       cookieSecure={window.location.protocol === "https:"}
     >
-      <Routes>
-        <Route path="/" Component={SupabaseLogin} />
-        <Route path="/logout" Component={Logout} />
-        <Route path="/privacy" Component={Privacy} />
-        <Route path="/terms" Component={Terms} />
-        <Route
-          path="/home"
-          element={
-            <RequireAuth loginPath="/">
-              <RenderHome />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/juicy"
-          element={
-            <RequireAuth loginPath="/">
-              <RenderJuicyPlays />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/slips"
-          element={
-            <RequireAuth loginPath="/">
-              <RenderSlips />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <RequireAuth loginPath="/">
-              <RenderAccount />
-            </RequireAuth>
-          }
-        />
-      </Routes>
+      <MainContent />
     </AuthProvider>
   );
 }
+
