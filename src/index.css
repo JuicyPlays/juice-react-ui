@@ -1,0 +1,555 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design System Tokens ─────────────────────────────────────────── */
+:root {
+  --bg-primary: #080810;
+  --bg-secondary: #0f0f1e;
+  --bg-surface: #13132b;
+  --bg-card: rgba(19, 19, 43, 0.7);
+  --border: rgba(99, 102, 241, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.35);
+  --violet: #8b5cf6;
+  --violet-glow: rgba(139, 92, 246, 0.3);
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --text-primary: #f1f1fb;
+  --text-secondary: #a0a0c0;
+  --text-muted: #5a5a7a;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  --shadow-glow: 0 0 24px var(--accent-glow);
+  --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+/* ── Base ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+code {
+  font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ── Glass Card ───────────────────────────────────────────────────── */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Gradient Text ────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-light) 0%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient Button ──────────────────────────────────────────────── */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--violet) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 10px 22px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px var(--accent-glow);
+  letter-spacing: 0.02em;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px var(--accent-glow), 0 0 0 1px rgba(99, 102, 241, 0.4);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-gradient:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Outlined Button ──────────────────────────────────────────────── */
+.btn-outline {
+  background: transparent;
+  color: var(--accent-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 9px 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-outline:hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.btn-outline:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Sport Badge / Pill ───────────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent-light);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* ── Diff Cells ───────────────────────────────────────────────────── */
+.diff-high {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.diff-medium {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.diff-low {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* ── MUI Dark Theme Overrides ─────────────────────────────────────── */
+
+/* AppBar override */
+.MuiAppBar-root {
+  background: rgba(8, 8, 16, 0.85) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* MUI Table (material-react-table) dark override */
+.MuiPaper-root {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+.MuiTableHead-root .MuiTableCell-head {
+  background-color: rgba(99, 102, 241, 0.08) !important;
+  color: var(--text-secondary) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.MuiTableBody-root .MuiTableCell-root {
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13.5px !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: rgba(99, 102, 241, 0.05) !important;
+}
+
+.MuiTableBody-root .MuiTableRow-root:nth-of-type(even) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* MUI Menu dark */
+.MuiMenu-paper,
+.MuiPopover-paper {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+  color: var(--text-primary) !important;
+}
+
+.MuiMenuItem-root {
+  font-family: 'Inter', sans-serif !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Toolbar pagination */
+.MuiTablePagination-root {
+  color: var(--text-secondary) !important;
+  font-family: 'Inter', sans-serif !important;
+  background: transparent !important;
+}
+
+.MuiTablePagination-selectIcon,
+.MuiTablePagination-actions .MuiIconButton-root {
+  color: var(--text-secondary) !important;
+}
+
+/* Outlined MUI Button */
+.MuiButton-outlined {
+  color: var(--accent-light) !important;
+  border-color: var(--border) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-md) !important;
+  transition: var(--transition) !important;
+}
+
+.MuiButton-outlined:hover {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border-color: var(--accent) !important;
+}
+
+/* MUI Circular Progress */
+.MuiCircularProgress-root {
+  color: var(--accent-light) !important;
+}
+
+/* MUI Modal backdrop */
+.MuiModal-backdrop {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* ── React Select Dark Theme ──────────────────────────────────────── */
+.react-select-dark__control {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  min-height: 40px !important;
+  box-shadow: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  color: var(--text-primary) !important;
+  transition: var(--transition) !important;
+}
+
+.react-select-dark__control:hover,
+.react-select-dark__control--is-focused {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-glow) !important;
+}
+
+.react-select-dark__menu {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.react-select-dark__option {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  font-size: 13px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.react-select-dark__option:hover,
+.react-select-dark__option--is-focused {
+  background-color: rgba(99, 102, 241, 0.12) !important;
+}
+
+.react-select-dark__option--is-selected {
+  background-color: rgba(99, 102, 241, 0.22) !important;
+  color: var(--accent-light) !important;
+}
+
+.react-select-dark__multi-value {
+  background-color: rgba(99, 102, 241, 0.2) !important;
+  border-radius: 6px !important;
+}
+
+.react-select-dark__multi-value__label {
+  color: var(--accent-light) !important;
+  font-size: 12px !important;
+}
+
+.react-select-dark__multi-value__remove:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+}
+
+.react-select-dark__placeholder {
+  color: var(--text-muted) !important;
+}
+
+.react-select-dark__input-container,
+.react-select-dark__single-value {
+  color: var(--text-primary) !important;
+}
+
+.react-select-dark__indicator-separator {
+  background-color: var(--border) !important;
+}
+
+.react-select-dark__dropdown-indicator,
+.react-select-dark__clear-indicator {
+  color: var(--text-muted) !important;
+}
+
+.react-select-dark__dropdown-indicator:hover,
+.react-select-dark__clear-indicator:hover {
+  color: var(--accent-light) !important;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.55);
+}
+
+/* ── Animations ───────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(99, 102, 241, 0.15);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orb-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+
+  66% {
+    transform: translate(-20px, 15px) scale(0.97);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ── Page Layout ──────────────────────────────────────────────────── */
+.page-content {
+  flex: 1;
+  padding: 28px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Filter Bar ───────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  margin-bottom: 20px;
+}
+
+/* ── Section Header ───────────────────────────────────────────────── */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin: 0 0 6px 0;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 20px 0;
+}
+
+/* ── Toggle Switch override ───────────────────────────────────────── */
+.juice-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.juice-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+}
+
+.juice-toggle input {
+  display: none;
+}
+
+.juice-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.juice-toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.juice-toggle input:checked+.juice-toggle-slider {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: var(--accent);
+}
+
+.juice-toggle input:checked+.juice-toggle-slider::before {
+  left: 23px;
+  background: var(--accent-light);
+}
