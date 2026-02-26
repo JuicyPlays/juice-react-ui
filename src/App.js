@@ -6,7 +6,7 @@ import RenderHome from "./pages/Home";
 import RenderJuicyPlays from "./pages/JuicyPlays";
 import RenderSlips from "./pages/Slips";
 import Logout from "./pages/Logout";
-import { AuthProvider, RequireAuth, useIsAuthenticated, useSignIn, useSignOut } from "react-auth-kit";
+import { AuthProvider, RequireAuth, useAuthUser, useIsAuthenticated, useSignIn, useSignOut } from "react-auth-kit";
 import { loadStripe } from "@stripe/stripe-js";
 import RenderAccount from "./pages/Account";
 import Privacy from "./pages/Privacy";
