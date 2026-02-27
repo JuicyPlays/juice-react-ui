@@ -79,7 +79,7 @@ const PricingCard = ({ plan }) => {
       }
     }
     if (user()) getUser(user().userId);
-  }, [user]);
+  }, [user()?.userId]);
 
   const location = useLocation();
 

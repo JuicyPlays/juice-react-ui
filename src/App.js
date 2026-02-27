@@ -46,7 +46,7 @@ function SubscriptionGuard({ children }) {
       }
     }
     checkAccess();
-  }, [user]);
+  }, [user()?.userId]);
 
   if (status.loading) {
     return (
@@ -130,7 +130,7 @@ function MainContent() {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, signIn, signOut, authenticated, location.state]);
+  }, [navigate, signIn, signOut, authenticated]); // Removed location.state to avoid re-run loops
 
   return (
     <Routes>
